@@ -8,46 +8,12 @@ const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 
+// BrandSelect
 interface Brand {
   id: number; // Supondo que a tabela tenha um ID
   name: string;
 }
-
-
-interface Category {
-  id: number; // Supondo que a tabela tenha um ID
-  name: string;
-}
-
-// Modal
-const Modal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
-  if (!isOpen) return null; // Não renderiza nada se o modal não estiver aberto
-
-  // CategorySelect
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-
-  useEffect(() => {
-    const fetchCategory = async () => {
-      const { data, error } = await supabase
-      .from('category')
-      .select('*')
-
-      if (error) {
-        console.log('Error fetching categories:', error);
-      } else {
-        setCategories(data);
-      }
-    };
-
-    fetchCategory();
-  }, [categories, setCategories]);
-
-  const handleChangeCategory = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCategory(event.target.value);
-  };
-
-  // BrandSelect
+const BrandSelect: React.FC = () => {
   const [brands, setBrands] = useState<Brand[]>([]);
   const [selectedBrand, setSelectedBrand] = useState<string>('');
 
@@ -70,6 +36,65 @@ const Modal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onC
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedBrand(event.target.value);
   };
+
+  return (
+    <select className='text-black flex-1 rounded border-none outline-none px-1' value={selectedBrand} onChange={handleChange}>
+      <option value="">Selecione uma marca</option>
+      {brands.map(brand => (
+        <option key={brand.id} value={brand.name}>
+          {brand.name}
+        </option>
+      ))}
+    </select>
+  );
+};
+
+
+// CategorySelect
+interface Category {
+  id: number; // Supondo que a tabela tenha um ID
+  name: string;
+}
+const CategorySelect: React.FC = () => {
+    const [categories, setCategories] = useState<Brand[]>([]);
+    const [selectedBrand, setSelectedBrand] = useState<string>('');
+
+    useEffect(() => {
+      const fetchCategory = async () => {
+        const { data, error } = await supabase
+        .from('category')
+        .select('*');
+  
+      if (error) {
+        console.log('Error fetching clothes:', error);
+      } else {
+        setCategories(data);
+      }
+      };
+
+      fetchCategory();
+    }, [categories, setCategories]);
+
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedBrand(event.target.value);
+  };
+
+  return (
+    <select className='text-black flex-1 rounded border-none outline-none px-1' value={selectedBrand} onChange={handleChange}>
+      <option value="">Selecione uma Categoria</option>
+      {categories.map(category => (
+        <option key={category.id} value={category.name}>
+          {category.name}
+        </option>
+      ))}
+    </select>
+  );
+};
+
+
+// Modal
+const Modal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  if (!isOpen) return null; // Não renderiza nada se o modal não estiver aberto
 
   // const [id, setId] = useState<string>('');
   const [name, setName] = useState<string>('');
@@ -114,7 +139,7 @@ const Modal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onC
     } catch (error) {
       setMensagem(`Ocorreu um erro: ${error}`);
     }
-}
+  };
 
   return (
     <div className='fixed top-0 bottom-0 left-0 right-0 backdrop-brightness-75 flex items-center justify-center'>
@@ -146,14 +171,7 @@ const Modal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onC
 
               <div className='flex flex-col'>
                 <label>Marca:</label>
-                <select className='text-black flex-1 rounded border-none outline-none px-1' value={selectedBrand} onChange={handleChange}>
-                  <option value="">Selecione uma marca</option>
-                  {brands.map(brand => (
-                    <option key={brand.id} value={brand.name}>
-                      {brand.name}
-                    </option>
-                  ))}
-                </select>
+                <BrandSelect />
               </div>
             </div>
             
@@ -182,14 +200,7 @@ const Modal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onC
             <div className="flex items-center gap-5">
               <div className='flex flex-col'>
                 <label>Categoria:</label>
-                <select className='text-black flex-1 rounded border-none outline-none px-1' value={selectedCategory} onChange={handleChangeCategory}>
-                  <option value="">Selecione uma Categoria</option>
-                  {categories.map(category => (
-                    <option key={category.id} value={category.name}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
+                <CategorySelect />
               </div>
 
               <div className='flex flex-col'>
