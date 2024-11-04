@@ -60,7 +60,7 @@ body {
 }
 
 .cards {
-  width: 100%;
+  width: 100vw;
   max-width: 1300px;
   height: calc(97px - 100vh);
 
