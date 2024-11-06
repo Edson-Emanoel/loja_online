@@ -7,7 +7,6 @@ const supabaseUrl = 'https://pmhyyoefmskloexhlgiu.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtaHl5b2VmbXNrbG9leGhsZ2l1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzAzNzk5MjcsImV4cCI6MjA0NTk1NTkyN30.Sbat4qbAYqIUIrq5Oew0NK1wJqeMxHByf0UUSO1KEOE';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-
 // BrandSelect
 interface Brand {
   id: number; // Supondo que a tabela tenha um ID
