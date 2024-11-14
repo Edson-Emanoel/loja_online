@@ -25,7 +25,6 @@ const Modal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onC
   const [local, setLocal] = useState<string>('');
   // const [urlProduct, setUrlProduct] = useState<string[]>([]);
   const [gender, setGender] = useState<string>('');
-
   const [mensagem, setMensagem] = useState<string>('');
 
   const stars = 1;
